@@ -1,17 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta http-equiv="Cache-Control" content="no-store" />
     <title>ChatBot Tester</title>
 </head>
 <body>
    <p>Test</p>
+<!--
+   scriptUrl = 'https://d1kr663wima0pv.cloudfront.net/assistler.js';
+   scriptUrl = 'assistler.js';
+-->
+   <div id="bot" style="width:300px;height:400px;border:1px solid black;position:relative"></div>
 <!-- Assistler Chat -->
-<script src="https://d1kr663wima0pv.cloudfront.net/assistler.js"
+<script src='assistler.js'
 data-assistant-id="1726065729463x528776691073941500"
-data-width="400"
-data-height="500"
+data-width="300"
+data-height="400"
 data-position="bottom-right"
-data-initial-message="Hello 💎"
-data-icon="💬"></script>
+data-embed-into=""
+data-initial-greeting="Hello 💎"
+data-icon="💬"
+data-force-conversation="true"
+></script>
 </body>
 </html>

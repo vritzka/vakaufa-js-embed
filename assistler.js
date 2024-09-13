@@ -10,12 +10,16 @@
     var scriptTag = getScriptTag();
 
     var assistantId = scriptTag.getAttribute('data-assistant-id');
+    var initialGreeting = scriptTag.getAttribute('data-initial-greeting');
     var width = scriptTag.getAttribute('data-width') || '300';
     var height = scriptTag.getAttribute('data-height') || '400';
     var icon = scriptTag.getAttribute('data-button-icon') || '💬';
     var position = scriptTag.getAttribute('data-position') || 'bottom-right';
+    var embedInto = scriptTag.getAttribute('data-embed-into') || 'body';
+    var embedElement = (embedInto == 'body') ? document.body : document.getElementById(embedInto);
     var backgroundColor = scriptTag.getAttribute('data-background-color') || '#007bff';
-
+    var forceConversation = scriptTag.getAttribute('data-force-conversation') || false;
+    forceConversation = (forceConversation == 'false' || forceConversation == '0') ? false : true;
     var screenWidth = window.innerWidth;
     var screenHeight = window.innerHeight;
 
@@ -52,8 +56,7 @@
 
     // Create the chat icon
     var chatIcon = document.createElement('div');
-    chatIcon.id = 'chat-icon';
-    chatIcon.style.position = 'fixed';
+    chatIcon.id = 'assistler-icon';
     chatIcon.style.width = '60px';
     chatIcon.style.height = '60px';
     chatIcon.style.backgroundColor = backgroundColor;
@@ -65,30 +68,45 @@
     chatIcon.style.alignItems = 'center';
     chatIcon.style.color = 'white';
     chatIcon.style.fontSize = '30px';
-    chatIcon.style.zIndex = '1000';
+    chatIcon.style.zIndex = '10000';
     chatIcon.innerHTML = icon;
+
+    if(embedInto == 'body') {
+        chatIcon.style.position = 'fixed';
+    } else {
+        chatIcon.style.position = 'absolute';
+    }
 
     // Apply the selected position for the icon
     Object.assign(chatIcon.style, chosenPosition);
-    document.body.appendChild(chatIcon);
+    embedElement.appendChild(chatIcon);
 
     // Create the chatbot iframe container (with close button)
     var chatContainer = document.createElement('div');
-    chatContainer.id = 'chatbot-container';
-    chatContainer.style.position = 'fixed';
+    chatContainer.id = 'assistler-container';
     chatContainer.style.width = width + 'px';
     chatContainer.style.height = height + 'px';
     chatContainer.style.border = 'none';
     chatContainer.style.backgroundColor = "#000000";
-    chatContainer.style.zIndex = '1000';
+    chatContainer.style.zIndex = '10001';
     chatContainer.style.display = 'none'; // Initially hidden
     Object.assign(chatContainer.style, chosenPosition);
+    if(embedInto == 'body') {
+        chatContainer.style.position = 'fixed';
+        Object.assign(chatContainer.style, chosenPosition);
+    } else {
+        chatContainer.style.position = 'absolute';
+        Object.assign(chatContainer.style, {
+            top: '0px',
+            left: '0px'
+        });
+    }
 
 
     // Create the chatbot iframe (inside the container)
     var chatIframe = document.createElement('iframe');
     chatIframe.id = 'chatbot-iframe';
-    chatIframe.src = 'https://odd-lake-2494.ploomberapp.io/?id=' + assistantId;
+    chatIframe.src = 'https://odd-lake-2494.ploomberapp.io?id=' + assistantId + '&initial_greeting=' + initialGreeting;
     chatIframe.style.width = '100%'; // Full width inside container
     chatIframe.style.height = '100%'; // Full height inside container
     chatIframe.style.border = 'none';
@@ -112,20 +130,23 @@
     closeButton.style.alignItems = 'center';
     closeButton.style.fontSize = '20px';
     closeButton.style.lineHeight = '1'; 
-    closeButton.style.zIndex = '1001'; // Ensure the close button is above the iframe
+    closeButton.style.zIndex = '100003'; // Ensure the close button is above the iframe
 
     chatContainer.appendChild(closeButton);
 
       function init_assistler() {
-        if(initiated) {
-          return true;
-        }
+
+        if(initiated) {return true}
+
         initiated = true;
-        document.body.appendChild(chatContainer);
+        embedElement.appendChild(chatContainer);
       };
     
-    // Toggle chatbot visibility when the icon is clicked
-    // Toggle chatbot visibility when the icon is clicked
+    if(forceConversation) {
+        init_assistler()
+        chatContainer.style.display = 'block';
+    };
+
     chatIcon.addEventListener('click', function () {
         if (chatContainer.style.display === 'none') {
             init_assistler();
