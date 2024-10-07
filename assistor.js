@@ -23,7 +23,7 @@ var Assistor = {
         var embedInto = this.config.embedInto || 'body';
         var embedElement = (embedInto == 'body') ? document.body : document.getElementById(embedInto);
         var backgroundColor = this.config.color || '#007bff';
-
+        var country = this.config.country || 'US';
         var screenWidth = window.innerWidth;
         var screenHeight = window.innerHeight;
 
@@ -110,7 +110,7 @@ var Assistor = {
         // Create the chatbot iframe (inside the container)
         var chatIframe = document.createElement('iframe');
         chatIframe.id = 'chatbot-iframe';
-        chatIframe.src = 'https://odd-lake-2494.ploomberapp.io?id=' + assistorId + '&initial_greeting=' + initialGreeting;
+        chatIframe.src = 'https://streamlit-app-i5dp.onrender.com?id=' + assistorId + '&initial_greeting=' + initialGreeting + '&country=' + country;
         chatIframe.style.width = '100%'; // Full width inside container
         chatIframe.style.height = '100%'; // Full height inside container
         chatIframe.style.border = 'none';
