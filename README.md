@@ -1,4 +1,4 @@
-** JS embed for VAKAUFA Shopify Chatbot **
+**JS embed for VAKAUFA Shopify Chatbot**
 
 This file is hosted on AWS Cloudfront.
 
